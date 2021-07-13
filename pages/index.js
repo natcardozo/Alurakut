@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import MainGrid from '../src/components/MainGrid';
 import Box from '../src/components/Box';
 import { AlurakutMenu, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
@@ -12,6 +13,20 @@ function ProfileSidebar(propriedades) {
 }
 
 export default function Home() {
+  const [seguidores, setSeguidores] = useState([]);
+  const [numSeguidores, setNumSeguidores] = useState(0);
+
+  useEffect (async() => {
+    const url = `https://api.github.com/users/${githubUser}/followers`;
+    const resultado = await fetch(url);
+    const resultadoJson = await resultado.json();
+
+    setNumSeguidores(resultadoJson.length);
+
+    const resultadoSlice = resultadoJson.slice(0, 9);
+    setSeguidores(resultadoSlice);
+  },[])
+
   const githubUser = 'natcardozo';
   const pessoasFavoritas = [
     'vihh25',
@@ -36,22 +51,22 @@ export default function Home() {
             Bem-vindo(a)
             </h1>
 
-            <OrkutNostalgicIconSet />
+            <OrkutNostalgicIconSet confiavel = {3} legal = {3} sexy = {2} />
           </Box>
         </div>
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
-              Amigos ({pessoasFavoritas.length})
+              Amigos ({numSeguidores})
             </h2>
 
             <ul>
-              {pessoasFavoritas.map((itemAtual) => {
+              {seguidores && seguidores.map((itemAtual) => {
                 return (
-                  <li>
-                    <a href={`/users/${itemAtual}`} key={itemAtual}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
+                  <li key={itemAtual.login}>
+                    <a href={`/users/${itemAtual.login}`} key={itemAtual.login}>
+                      <img src={`https://github.com/${itemAtual.login}.png`} />
+                      <span>{itemAtual.login}</span>
                     </a>
                   </li>
                 )
