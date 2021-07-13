@@ -25,6 +25,10 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
 
+  .marginT10 {
+    margin-top: 10px;
+  }
+
   ${AlurakutStyles}
 `
 
