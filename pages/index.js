@@ -3,7 +3,7 @@ import MainGrid from '../src/components/MainGrid';
 import Box from '../src/components/Box';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
-import ScrapForm from './scrapform';
+import ScrapForm from './ScrapForm';
 import DepoimentoForm from './DepoimentoForm';
 import comunidadesDefault from '../src/objects/defaultValues';
 
