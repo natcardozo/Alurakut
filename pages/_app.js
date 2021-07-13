@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: sans-serif;
-    background-color: #f2d9f2;
+    background-color: #f2e6ff;
   }
 
   #__next {
@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
 
 const theme = {
   colors: {
-    primary: '#b300b3',
+    primary: '#730099',
   },
 }
 

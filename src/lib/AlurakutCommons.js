@@ -54,7 +54,7 @@ export function AlurakutMenu({ githubUser }) {
 }
 AlurakutMenu.Wrapper = styled.header`
   width: 100%;
-  background-color: #b300b3;
+  background-color: #8600b3;
 
   .alurakutMenuProfileSidebar {
     background: white;
@@ -81,7 +81,7 @@ AlurakutMenu.Wrapper = styled.header`
     }
     .boxLink {
       font-size: 18px;
-      color: #b300b3;
+      color: #8600b3;
       -webkit-text-decoration: none;
       text-decoration: none;
       font-weight: 800;
@@ -96,7 +96,7 @@ AlurakutMenu.Wrapper = styled.header`
   }
 
   .container {
-    background-color: #b300b3;
+    background-color: #8600b3;
     padding: 7px 16px;
     max-width: 1110px;
     margin: auto;
@@ -131,7 +131,7 @@ AlurakutMenu.Wrapper = styled.header`
         text-decoration: none;
         &:after {
           content: " ";
-          background-color: #990099;
+          background-color: #600080;
           display: block;
           position: absolute;
           width: 1px;
@@ -145,7 +145,7 @@ AlurakutMenu.Wrapper = styled.header`
     }
     input {
       color: #ffffff;
-      background: #990099;
+      background: #600080;
       padding: 10px 42px;
       border: 0;
       background-image: url(${`${BASE_URL}/icons/search.svg`});
@@ -328,11 +328,11 @@ const AlurakutLoginScreen = css`
     --backgroundPrimary: #ffe6ff;
     --backgroundSecondary: #ffe6ff;
     --backgroundTertiary: #FFFFFF;
-    --backgroundQuarternary: #ffccff;
-    --colorPrimary: #ff66ff;
-    --colorSecondary: #ff80ff;
-    --colorTertiary: #990099;
-    --colorQuarternary: #D81D99;
+    --backgroundQuarternary: #d9b3ff;
+    --colorPrimary: #cc99ff;
+    --colorSecondary: #bf80ff;
+    --colorTertiary: #730099;
+    --colorQuarternary: #730090;
     --textPrimaryColor: #333333;
     --textSecondaryColor: #FFFFFF;
     --textTertiaryColor: #5A5A5A;
