@@ -41,6 +41,12 @@ export const comunidadesDefault = [
         image: 'https://br.web.img3.acsta.net/medias/nmedia/18/87/30/91/19911912.jpg',
         url: 'https://www.youtube.com/watch?v=sFXGrTng0gQ',
     },
+    {
+        id: '8'/*n aleatorio*/,
+        title: 'TPK Lab',
+        image: 'https://c10.patreonusercontent.com/3/eyJ3IjoyMDB9/patreon-media/p/campaign/6785360/7687818e35b64ed7ab88ef569c773efb/2.png?token-time=2145916800&token-hash=kGpPJJ0zLANhnbuv9KjdpydqupNd-fLPkAXqurcI8vs%3D',
+        url: 'https://www.patreon.com/tpklab',
+    },
 
 ]
 export default comunidadesDefault;
