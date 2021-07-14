@@ -2,7 +2,7 @@ import React from 'react';
 import MainGrid from '../src/components/MainGrid';
 import Box from '../src/components/Box';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
-import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
+import { ProfileRelationsBoxWrapper, ProfileRelations } from '../src/components/ProfileRelations';
 import ScrapForm from './ScrapForm';
 import DepoimentoForm from './DepoimentoForm';
 import comunidadesDefault from '../src/objects/defaultValues';
@@ -28,6 +28,7 @@ function ProfileSidebar(propriedades) {
 export default function Home() {
   const [seguidores, setSeguidores] = React.useState([]);
   const [numSeguidores, setNumSeguidores] = React.useState(0);
+  // const [numPessoasComunidade, setNumPessoasComunidade] = React.useState(0);
   const [comunidades, setComunidades] = React.useState(comunidadesDefault);
   const [acao, setAcao] = React.useState('Comunidade');
 
@@ -36,21 +37,56 @@ export default function Home() {
     const resultado = await fetch(url);
     const resultadoJson = await resultado.json();
 
-    setNumSeguidores(resultadoJson.length);
+    const resultadoAmigos = resultadoJson.slice(0, 9).map((item) => {
+      return {
+        title: item.login
+      }
+    });
+    setSeguidores(resultadoAmigos);
 
-    const resultadoSlice = resultadoJson.slice(0, 9);
-    setSeguidores(resultadoSlice);
+    const urlUser = `https://api.github.com/users/${githubUser}`;
+    const countSeguidores = await fetch(urlUser).then ((response) => {
+      return response.json();
+    })
+    .then ((response) => {
+      return response.followers;
+    }, [])
+
+    setNumSeguidores(countSeguidores);
   },[])
 
   const githubUser = 'natcardozo';
-  const pessoasFavoritas = [
-    'vihh25',
-    'juunegreiros',
-    'omariosouto',
-    'peas',
-    'cs50',
-    'brianyu28',
-    'dmalan'
+  const pessoasComunidade = [
+    {
+      title: 'juunegreiros',
+      image: 'img',
+      url: 'url',
+    },
+    {
+      title: 'omariosouto',
+      image: 'img',
+      url: 'url',
+    },
+    {
+      title: 'peas',
+      image: 'img',
+      url: 'url',
+    },
+    {
+      title: 'cs50',
+      image: 'img',
+      url: 'url',
+    },
+    {
+      title: 'brianyu28',
+      image: 'img',
+      url: 'url',
+    },
+    {
+      title: 'dmalan',
+      image: 'img',
+      url: 'url',
+    }
   ]
   
   return (
@@ -115,8 +151,8 @@ export default function Home() {
                 const comunidade = {
                   id: new Date().toISOString(),
                   title: dadosDoForm.get('title'),
-                  image: valorImagem,
-                  url: urlComunidade,
+                  imgLink: valorImagem,
+                  extLink: urlComunidade,
                 }
                 const comunidadesAtualizadas = [...comunidades, comunidade]
                 setComunidades(comunidadesAtualizadas)
@@ -158,44 +194,18 @@ export default function Home() {
             </div>
             }
           </Box>
+
         </div>
 
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
           <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Amigos ({numSeguidores})
-            </h2>
-
-            <ul>
-              {seguidores && seguidores.map((itemAtual) => {
-                return (
-                  <li key={itemAtual.login}>
-                    <a href={`https://github.com/${itemAtual.login}`}>
-                      <img src={`https://github.com/${itemAtual.login}.png`} />
-                      <span>{itemAtual.login}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
+            <ProfileRelations title='Amigos' amount={numSeguidores} list={seguidores}/>
           </ProfileRelationsBoxWrapper>
           <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Comunidades ({comunidades && comunidades.length})
-            </h2>
-
-            <ul>
-              {comunidades && comunidades.slice(0, 9).map((itemAtual) => {
-                return (
-                  <li key={itemAtual.id}>
-                    <a href={`${itemAtual.url}`}>
-                      <img src={itemAtual.image} />
-                      <span>{itemAtual.title}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
+            <ProfileRelations title='Pessoas da Comunidade' amount={pessoasComunidade.length} list={pessoasComunidade}/>
+          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsBoxWrapper>
+            <ProfileRelations title='Comunidades' amount={comunidades.length} list={comunidades}/>
           </ProfileRelationsBoxWrapper>
         </div>
       </MainGrid>
