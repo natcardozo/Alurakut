@@ -5,7 +5,8 @@ import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet 
 import { ProfileRelationsBoxWrapper, ProfileRelations } from '../src/components/ProfileRelations';
 import ScrapForm from './ScrapForm';
 import DepoimentoForm from './DepoimentoForm';
-import comunidadesDefault from '../src/objects/defaultValues';
+import DepoimentoBox from '../src/components/Depoimento';
+import ScrapBox from '../src/components/Scrap';
 
 function ProfileSidebar(propriedades) {
   return (
@@ -27,9 +28,10 @@ function ProfileSidebar(propriedades) {
 
 export default function Home() {
   const [seguidores, setSeguidores] = React.useState([]);
+  const [depoimentos, setDepoimentos] = React.useState([]);
+  const [scraps, setScraps] = React.useState([]);
   const [numSeguidores, setNumSeguidores] = React.useState(0);
-  // const [numPessoasComunidade, setNumPessoasComunidade] = React.useState(0);
-  const [comunidades, setComunidades] = React.useState(comunidadesDefault);
+  const [comunidades, setComunidades] = React.useState([]);
   const [acao, setAcao] = React.useState('Comunidade');
 
   React.useEffect (async() => {
@@ -39,6 +41,7 @@ export default function Home() {
 
     const resultadoAmigos = resultadoJson.slice(0, 9).map((item) => {
       return {
+        id: item.login,
         title: item.login
       }
     });
@@ -50,39 +53,79 @@ export default function Home() {
     })
     .then ((response) => {
       return response.followers;
-    }, [])
+    })
 
     setNumSeguidores(countSeguidores);
+
+    // API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'f20095d0ec6c4c9bc4f93c9f0f4911',
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ "query": `query {
+        allCommunities {
+          id
+          title
+          imageUrl
+          communityUrl
+        }
+      }` })
+    })
+    .then((response) => response.json())
+    .then((respostaCompleta) => {
+      const comunidadesDato = respostaCompleta.data.allCommunities;
+      setComunidades(comunidadesDato)
+    })
+
+    fetch('api/ListScraps', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then((response) => response.json())
+    .then((response) => setScraps(response))
+
   },[])
 
   const githubUser = 'natcardozo';
   const pessoasComunidade = [
     {
+      id: '1',
       title: 'juunegreiros',
       image: 'img',
       url: 'url',
     },
     {
+      id: '2',
       title: 'omariosouto',
       image: 'img',
       url: 'url',
     },
     {
+      id: '3',
       title: 'peas',
       image: 'img',
       url: 'url',
     },
     {
+      id: '4',
       title: 'cs50',
       image: 'img',
       url: 'url',
     },
     {
+      id: '5',
       title: 'brianyu28',
       image: 'img',
       url: 'url',
     },
     {
+      id: '6',
       title: 'dmalan',
       image: 'img',
       url: 'url',
@@ -149,13 +192,24 @@ export default function Home() {
                 }
 
                 const comunidade = {
-                  id: new Date().toISOString(),
                   title: dadosDoForm.get('title'),
-                  imgLink: valorImagem,
-                  extLink: urlComunidade,
+                  imageUrl: valorImagem,
+                  communityUrl: urlComunidade,
                 }
-                const comunidadesAtualizadas = [...comunidades, comunidade]
-                setComunidades(comunidadesAtualizadas)
+
+                fetch('/api/Communities', {
+                  method: 'POST',
+                  headers: {
+                    'Content-type': 'application/json',
+                  },
+                  body: JSON.stringify(comunidade)
+                })
+                .then(async (response) => {
+                  const dados = await response.json();
+                  const comunidade = dados.register;
+                  const comunidadesAtualizadas = [...comunidades, comunidade]
+                  setComunidades(comunidadesAtualizadas)
+                })
             }}>
 
               <div className='marginT10'>
@@ -186,14 +240,25 @@ export default function Home() {
             </form>
             : acao === 'Scrap' ?
             <div className='marginT10'>
-              <ScrapForm />
+              <ScrapForm setScraps = {
+                (scrap) => {
+                  setScraps([scrap, ...scraps])
+                }
+              } />
             </div>
             : 
             <div className='marginT10'>
-              <DepoimentoForm />
+              <DepoimentoForm setDepoimentos = {
+                (depoimento) => {
+                  setDepoimentos([...depoimentos, depoimento])
+                }
+              } />
             </div>
             }
           </Box>
+          {acao === 'Depoimento' && <DepoimentoBox list={depoimentos} />}
+
+          {acao === 'Scrap' && <ScrapBox list={scraps} />}
 
         </div>
 

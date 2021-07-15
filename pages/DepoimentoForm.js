@@ -8,7 +8,8 @@ export default function DepoimentoForm(props) {
             alert('O depoimento não pode estar vazio.');
             return;
         }
-        alert(dadosDoForm.get('depoimento'));
+
+        props.setDepoimentos(dadosDoForm.get('depoimento'))
 
     }}>
 

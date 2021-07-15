@@ -6,11 +6,11 @@ export function ProfileRelations (props) {
             </h2>
 
             <ul>
-                {props.list && props.list.map((itemAtual) => {
+                {props.list && props.list.slice(0, 9).map((itemAtual) => {
                     return (
-                        <li key={itemAtual.title}>
-                            <a href={itemAtual.extLink ? itemAtual.extLink : `https://github.com/${itemAtual.title}`}>
-                            <img src={itemAtual.imgLink ? itemAtual.imgLink : `https://github.com/${itemAtual.title}.png`} />
+                        <li key={itemAtual.id}>
+                            <a href={itemAtual.communityUrl ? itemAtual.communityUrl : `https://github.com/${itemAtual.title}`}>
+                            <img src={itemAtual.imageUrl ? itemAtual.imageUrl : `https://github.com/${itemAtual.title}.png`} />
                             <span>{itemAtual.title}</span>
                             </a>
                         </li>
