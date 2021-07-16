@@ -1,6 +1,8 @@
 import React from 'react';
+import nookies from 'nookies';
 import styled, { css } from 'styled-components';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 const BASE_URL = 'http://alurakut.vercel.app/';
 const v = '1';
@@ -20,6 +22,7 @@ function Link({ href, children, ...props }) {
 // Menu
 // ================================================================================================================
 export function AlurakutMenu({ githubUser }) {
+  const router = useRouter();
   const [isMenuOpen, setMenuState] = React.useState(false);
   return (
     <AlurakutMenu.Wrapper isMenuOpen={isMenuOpen}>
@@ -35,7 +38,11 @@ export function AlurakutMenu({ githubUser }) {
         </nav>
 
         <nav>
-          <a href={`/logout`}>
+          <a onClick={(e) => {
+            e.preventDefault();
+            nookies.destroy({}, 'USER_TOKEN');
+            router.push('/login');
+          }}>
             Sair
           </a>
           <div>
@@ -194,6 +201,7 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
 // AlurakutProfileSidebarMenuDefault
 // ================================================================================================================
 export function AlurakutProfileSidebarMenuDefault() {
+  const router = useRouter();
   return (
     <AlurakutProfileSidebarMenuDefault.Wrapper>
       <nav>
@@ -220,7 +228,11 @@ export function AlurakutProfileSidebarMenuDefault() {
           <img src={`${BASE_URL}/icons/plus.svg`} />
             GitHub Trends
           </a>
-        <a href="/logout">
+        <a onClick={(e) => {
+            e.preventDefault();
+            nookies.destroy({}, 'USER_TOKEN');
+            router.push('/login');
+          }}>
           <img src={`${BASE_URL}//icons/logout.svg`} />
             Sair
           </a>
@@ -407,7 +419,7 @@ const AlurakutLoginScreen = css`
         padding: var(--gutter);
         padding-left: 50px;
         padding-right: 50px;
-        background-color: var(--backgroundSecondary);
+        background-color: #fcfffa;
         border-radius: var(--commonRadius);
         flex: 1;
         &:not(:last-child) {
@@ -457,9 +469,17 @@ const AlurakutLoginScreen = css`
         text-align: center;
         a {
           text-decoration: none;
-          color: var(--colorPrimary);
+          color: #790e8b;
         }
       }
+    }
+    .warningSign {
+      background-color: #ffcdd2;
+      border-radius: 8px;
+      padding: 5px;
+      font-size: 10px;
+      text-align: center;
+      margin-bottom: 8px;
     }
   }
 `;

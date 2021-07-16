@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
+
 export function ProfileRelations (props) {
+    const router = useRouter();
     return (
         <div>
             <h2 className="smallTitle">
@@ -9,10 +12,22 @@ export function ProfileRelations (props) {
                 {props.list && props.list.slice(0, 9).map((itemAtual) => {
                     return (
                         <li key={itemAtual.id}>
-                            <a href={itemAtual.communityUrl ? itemAtual.communityUrl : `https://github.com/${itemAtual.title}`}>
-                            <img src={itemAtual.imageUrl ? itemAtual.imageUrl : `https://github.com/${itemAtual.title}.png`} />
-                            <span>{itemAtual.title}</span>
-                            </a>
+                            {
+                                props.title !== 'Amigos' ? 
+                                    <a href={itemAtual.communityUrl ? itemAtual.communityUrl : `https://github.com/${itemAtual.title}`}>
+                                    <img src={itemAtual.imageUrl ? itemAtual.imageUrl : `https://github.com/${itemAtual.title}.png`} />
+                                    <span>{itemAtual.title}</span>
+                                    </a>
+                                : 
+                                <a onClick = { (e) => {
+                                    e.preventDefault();
+                                    router.push(`/User/${itemAtual.title}`)
+                                }                                   
+                                }>
+                                <img src={itemAtual.imageUrl ? itemAtual.imageUrl : `https://github.com/${itemAtual.title}.png`} />
+                                <span>{itemAtual.title}</span>
+                                </a>
+                            }
                         </li>
                     )
                 })}
